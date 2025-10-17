@@ -64,9 +64,6 @@ class BuddyVision {
         // CRITICAL: Welcome message for blind users
         this.speakWelcomeMessage();
 
-        // Enable tap-anywhere-to-capture
-        this.enableTapAnywhere();
-
         console.log('Buddy Vision initialized successfully!');
     }
 
@@ -80,38 +77,11 @@ class BuddyVision {
 
             const welcomeMessage = translations?.welcome ||
                 'Welcome to Buddy Vision - Your universal AI assistant for LA 2028. ' +
-                'Tap anywhere on screen to get instant descriptions of signs, scenes, and surroundings. ' +
+                'Tap the big green capture button to get instant descriptions of signs, scenes, and surroundings. ' +
                 'Works in any language. Your phone will vibrate when capturing.';
 
             await window.buddyVoice.announce(welcomeMessage);
         }
-    }
-
-    enableTapAnywhere() {
-        // Make entire camera preview tappable
-        this.cameraPreview.addEventListener('click', async () => {
-            if (!this.captureBtn.disabled) {
-                this.vibratePhone('capture');
-                await this.handleCapture();
-            }
-        });
-
-        // Also make the main content area tappable
-        document.querySelector('main').addEventListener('click', async (e) => {
-            // Don't trigger if clicking buttons or controls
-            if (e.target.tagName === 'BUTTON' ||
-                e.target.tagName === 'SELECT' ||
-                e.target.tagName === 'INPUT' ||
-                e.target.closest('button') ||
-                e.target.closest('select')) {
-                return;
-            }
-
-            if (!this.captureBtn.disabled) {
-                this.vibratePhone('capture');
-                await this.handleCapture();
-            }
-        });
     }
 
     vibratePhone(type) {

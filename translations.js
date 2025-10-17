@@ -10,19 +10,19 @@ const translations = {
         languageLabel: 'Select Your Language',
 
         // Main button
-        captureButton: 'TAP ANYWHERE TO CAPTURE',
+        captureButton: 'TAP BUTTON TO CAPTURE',
 
         // Quick action buttons
         repeatButton: 'Repeat',
         readTextButton: 'Read Text',
 
         // Placeholder
-        placeholder: 'Tap anywhere to get instant AI descriptions in any language',
+        placeholder: 'Tap the big green button to get instant AI descriptions in any language',
 
         // Status messages
         initializingCamera: 'Initializing camera...',
-        cameraReady: 'Camera ready! Tap "Capture Scene" to begin.',
-        cameraReadyShort: 'Camera ready. Tap anywhere to describe what you see.',
+        cameraReady: 'Camera ready! Tap the capture button to begin.',
+        cameraReadyShort: 'Camera ready. Tap the big green button to describe what you see.',
         capturing: 'Capturing scene...',
         analyzing: 'Analyzing scene...',
         analyzing2: 'Analyzing...',
@@ -30,7 +30,7 @@ const translations = {
         descriptionReady: 'Description ready',
 
         // Welcome message
-        welcome: 'Welcome to Buddy Vision - Your universal AI assistant for LA 2028. Tap anywhere on screen to get instant descriptions of signs, scenes, and surroundings. Works in any language. Your phone will vibrate when capturing.',
+        welcome: 'Welcome to Buddy Vision - Your universal AI assistant for LA 2028. Tap the big green capture button to get instant descriptions of signs, scenes, and surroundings. Works in any language. Your phone will vibrate when capturing.',
 
         // Error messages
         cameraError: 'Camera access denied or unavailable. Please check permissions.',
@@ -48,19 +48,19 @@ const translations = {
     'es-ES': {
         tagline: 'Asistente AI Universal para LA 2028',
         languageLabel: 'Selecciona tu idioma',
-        captureButton: 'TOCA EN CUALQUIER LUGAR PARA CAPTURAR',
+        captureButton: 'TOCA EL BOTÓN PARA CAPTURAR',
         repeatButton: 'Repetir',
         readTextButton: 'Leer Texto',
-        placeholder: 'Toca en cualquier lugar para obtener descripciones instantáneas en cualquier idioma',
+        placeholder: 'Toca el gran botón verde para obtener descripciones instantáneas en cualquier idioma',
         initializingCamera: 'Inicializando cámara...',
-        cameraReady: 'Cámara lista. Toca "Capturar Escena" para comenzar.',
-        cameraReadyShort: 'Cámara lista. Toca en cualquier lugar para describir lo que ves.',
+        cameraReady: 'Cámara lista. Toca el botón de captura para comenzar.',
+        cameraReadyShort: 'Cámara lista. Toca el gran botón verde para describir lo que ves.',
         capturing: 'Capturando escena...',
         analyzing: 'Analizando escena...',
         analyzing2: 'Analizando...',
         generatingDescription: 'Generando descripción...',
         descriptionReady: 'Descripción lista',
-        welcome: 'Bienvenido a Buddy Vision - Tu asistente AI universal para LA 2028. Toca en cualquier lugar de la pantalla para obtener descripciones instantáneas de señales, escenas y entornos. Funciona en cualquier idioma. Tu teléfono vibrará al capturar.',
+        welcome: 'Bienvenido a Buddy Vision - Tu asistente AI universal para LA 2028. Toca el gran botón verde de captura para obtener descripciones instantáneas de señales, escenas y entornos. Funciona en cualquier idioma. Tu teléfono vibrará al capturar.',
         cameraError: 'Acceso a la cámara denegado o no disponible. Por favor verifica los permisos.',
         captureError: 'Error al capturar imagen',
         processingError: 'Ocurrió un error. Por favor intenta de nuevo.',
