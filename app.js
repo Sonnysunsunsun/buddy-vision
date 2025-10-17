@@ -61,8 +61,8 @@ class BuddyVision {
         // Load saved settings
         this.loadSettings();
 
-        // CRITICAL: Welcome message for blind users
-        this.speakWelcomeMessage();
+        // Welcome message disabled for demo
+        // this.speakWelcomeMessage();
 
         console.log('Buddy Vision initialized successfully!');
     }
@@ -162,13 +162,8 @@ class BuddyVision {
             this.showStatus(translations?.cameraReady || 'Camera ready! Tap "Capture Scene" to begin.', 'success');
             this.captureBtn.disabled = false;
 
-            // Announce to screen readers AND speak it
+            // Announce to screen readers only (no voice announcement)
             this.announceToScreenReader(translations?.cameraReady || 'Camera is ready. You can now capture scenes.');
-
-            // Voice announcement for all users
-            if (window.buddyVoice) {
-                window.buddyVoice.speak(translations?.cameraReadyShort || 'Camera ready. Tap anywhere to describe what you see.');
-            }
 
         } catch (error) {
             const currentLanguage = window.buddyVoice?.currentLanguage || 'en-US';
@@ -313,11 +308,6 @@ class BuddyVision {
         const translations = window.buddyTranslations?.getTranslations(currentLanguage);
 
         this.showLoading(translations?.analyzing || 'Analyzing scene...');
-
-        // Voice feedback for blind users
-        if (window.buddyVoice) {
-            window.buddyVoice.speak(translations?.analyzing2 || 'Analyzing...');
-        }
 
         // Add 30 second timeout
         const timeout = setTimeout(() => {
