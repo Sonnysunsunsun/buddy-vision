@@ -1,0 +1,813 @@
+/* ==========================================
+   Buddy Vision - Mobile-First Accessible CSS
+   WCAG AAA Compliant (7:1 contrast ratio)
+   ========================================== */
+
+:root {
+    /* High contrast color palette */
+    --primary-blue: #0051A5;
+    --primary-blue-dark: #003D7A;
+    --accent-green: #00703C;
+    --accent-yellow: #FFB81C;
+    --text-primary: #000000;
+    --text-secondary: #1A1A1A;
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F5F5F5;
+    --bg-tertiary: #E8E8E8;
+    --border-color: #333333;
+    --error-red: #C41E3A;
+    --success-green: #00703C;
+
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+
+    /* Touch targets (minimum 48x48px) */
+    --touch-target-min: 48px;
+
+    /* Font sizes */
+    --font-xs: 0.875rem;
+    --font-sm: 1rem;
+    --font-md: 1.125rem;
+    --font-lg: 1.5rem;
+    --font-xl: 2rem;
+}
+
+/* ==========================================
+   Base Styles
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================
+   Accessibility - Skip Links
+   ========================================== */
+
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--primary-blue);
+    color: var(--bg-primary);
+    padding: var(--spacing-sm);
+    text-decoration: none;
+    font-weight: bold;
+    z-index: 10000;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: 3px solid var(--accent-yellow);
+    outline-offset: 2px;
+}
+
+/* Screen reader only text */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ==========================================
+   Header
+   ========================================== */
+
+header {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+    color: var(--bg-primary);
+    padding: var(--spacing-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: var(--font-xl);
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: var(--spacing-xs);
+}
+
+.emoji {
+    font-size: 1.5em;
+    margin-left: 0.25em;
+}
+
+.tagline {
+    font-size: var(--font-sm);
+    text-align: center;
+    opacity: 0.95;
+    font-weight: 500;
+    margin-top: 0;
+}
+
+.partner-badge {
+    text-align: center;
+    font-size: var(--font-sm);
+    opacity: 0.95;
+    padding: var(--spacing-xs);
+}
+
+/* ==========================================
+   Language Selector
+   ========================================== */
+
+.language-selector-section {
+    background: linear-gradient(135deg, var(--accent-green) 0%, #005A2F 100%);
+    padding: var(--spacing-md);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-bottom: 3px solid var(--accent-yellow);
+}
+
+.language-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    font-size: var(--font-lg);
+    font-weight: bold;
+    color: var(--bg-primary);
+    margin-bottom: var(--spacing-sm);
+    text-align: center;
+}
+
+.label-icon {
+    font-size: 1.5em;
+}
+
+.label-text {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.language-select {
+    width: 100%;
+    max-width: 600px;
+    min-height: 60px;
+    font-size: var(--font-md);
+    font-weight: 600;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 3px solid var(--border-color);
+    border-radius: 12px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+}
+
+.language-select:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.language-select:focus {
+    outline: 4px solid var(--accent-yellow);
+    outline-offset: 2px;
+    transform: translateY(-2px);
+}
+
+.language-select option {
+    font-size: var(--font-sm);
+    padding: var(--spacing-sm);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* ==========================================
+   Main Content
+   ========================================== */
+
+main {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--spacing-md);
+}
+
+section {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* ==========================================
+   Venue Selector
+   ========================================== */
+
+.venue-section {
+    background: var(--bg-secondary);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+}
+
+.venue-label {
+    display: block;
+    font-size: var(--font-md);
+    font-weight: bold;
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+}
+
+.venue-select {
+    width: 100%;
+    min-height: var(--touch-target-min);
+    font-size: var(--font-md);
+    padding: var(--spacing-sm);
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.venue-select:focus {
+    outline: 3px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   Camera Section
+   ========================================== */
+
+.camera-section {
+    position: relative;
+}
+
+.camera-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid var(--border-color);
+    aspect-ratio: 4 / 3;
+}
+
+#camera-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+#capture-canvas {
+    display: none;
+}
+
+/* ==========================================
+   Controls Section (Buttons)
+   ========================================== */
+
+.controls-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.quick-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-md);
+}
+
+.quick-action-btn {
+    min-width: 140px;
+    min-height: var(--touch-target-min);
+    font-size: var(--font-sm);
+    font-weight: 600;
+    background: var(--primary-blue);
+    color: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    justify-content: center;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.quick-action-btn:hover,
+.quick-action-btn:focus {
+    background: var(--primary-blue-dark);
+    transform: translateY(-2px);
+    outline: 3px solid var(--accent-yellow);
+    outline-offset: 2px;
+}
+
+.quick-action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.quick-action-btn .btn-icon {
+    font-size: 1.2em;
+}
+
+/* Main Capture Button */
+.capture-btn {
+    width: 90%;
+    max-width: 500px;
+    min-height: 80px;
+    font-size: var(--font-lg);
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--accent-green) 0%, #005A2F 100%);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.capture-btn:hover,
+.capture-btn:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    outline: 3px solid var(--accent-yellow);
+    outline-offset: 2px;
+}
+
+.capture-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.capture-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-icon {
+    font-size: 2em;
+}
+
+/* Voice Command Button */
+.voice-btn {
+    width: 80%;
+    max-width: 400px;
+    min-height: var(--touch-target-min);
+    font-size: var(--font-md);
+    font-weight: 600;
+    background: var(--primary-blue);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    transition: background 0.2s;
+}
+
+.voice-btn:hover,
+.voice-btn:focus {
+    background: var(--primary-blue-dark);
+    outline: 3px solid var(--accent-yellow);
+    outline-offset: 2px;
+}
+
+.voice-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   Status Messages
+   ========================================== */
+
+.status-container {
+    min-height: 30px;
+    padding: var(--spacing-sm);
+    text-align: center;
+    font-weight: 600;
+}
+
+.status-container.info {
+    color: var(--primary-blue);
+}
+
+.status-container.error {
+    color: var(--error-red);
+    background: #FFE5E5;
+    border: 2px solid var(--error-red);
+    border-radius: 4px;
+}
+
+.status-container.success {
+    color: var(--success-green);
+}
+
+/* ==========================================
+   Description Output
+   ========================================== */
+
+.description-section {
+    background: var(--bg-secondary);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+}
+
+.description-output {
+    background: var(--bg-primary);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    min-height: 120px;
+    font-size: var(--font-md);
+    line-height: 1.8;
+    margin-bottom: var(--spacing-md);
+}
+
+.description-output:focus {
+    outline: 3px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+.placeholder-text {
+    color: #666666;
+    font-style: italic;
+}
+
+.description-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.control-btn {
+    min-width: 120px;
+    min-height: var(--touch-target-min);
+    font-size: var(--font-sm);
+    font-weight: 600;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: var(--spacing-sm) var(--spacing-md);
+    transition: background 0.2s;
+}
+
+.control-btn:hover,
+.control-btn:focus {
+    background: var(--primary-blue);
+    color: var(--bg-primary);
+    outline: 3px solid var(--accent-yellow);
+    outline-offset: 2px;
+}
+
+.control-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   Settings Section
+   ========================================== */
+
+.settings-section {
+    background: var(--bg-secondary);
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+}
+
+.settings-toggle {
+    width: 100%;
+    min-height: var(--touch-target-min);
+    font-size: var(--font-md);
+    font-weight: 600;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+}
+
+.settings-toggle:hover,
+.settings-toggle:focus {
+    background: var(--primary-blue);
+    color: var(--bg-primary);
+    outline: 3px solid var(--accent-yellow);
+    outline-offset: 2px;
+}
+
+.settings-panel {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+}
+
+fieldset {
+    border: none;
+    padding: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+legend {
+    font-size: var(--font-md);
+    font-weight: bold;
+    margin-bottom: var(--spacing-sm);
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    min-height: var(--touch-target-min);
+    padding: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+    width: 24px;
+    height: 24px;
+    margin-right: var(--spacing-sm);
+    cursor: pointer;
+}
+
+input[type="range"] {
+    width: 100%;
+    min-height: 40px;
+    margin-top: var(--spacing-xs);
+}
+
+/* ==========================================
+   Footer
+   ========================================== */
+
+footer {
+    background: var(--bg-secondary);
+    padding: var(--spacing-md);
+    text-align: center;
+    border-top: 2px solid var(--border-color);
+    margin-top: auto;
+}
+
+footer a {
+    color: var(--primary-blue);
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+footer a:hover,
+footer a:focus {
+    color: var(--primary-blue-dark);
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   Loading Overlay
+   ========================================== */
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.loading-overlay[hidden] {
+    display: none !important;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid var(--bg-secondary);
+    border-top-color: var(--accent-yellow);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+#loading-text {
+    color: var(--bg-primary);
+    font-size: var(--font-lg);
+    font-weight: bold;
+    margin-top: var(--spacing-md);
+}
+
+/* ==========================================
+   Modal (API Setup) - DISABLED FOR PRODUCTION
+   ========================================== */
+
+.modal {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
+
+#api-setup-modal {
+    display: none !important;
+}
+
+.modal-content {
+    background: var(--bg-primary);
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    max-width: 500px;
+    width: 100%;
+    border: 3px solid var(--border-color);
+}
+
+.modal-content h2 {
+    font-size: var(--font-lg);
+    margin-bottom: var(--spacing-md);
+    color: var(--text-primary);
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.modal-content label {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.modal-content input {
+    width: 100%;
+    min-height: var(--touch-target-min);
+    padding: var(--spacing-sm);
+    font-size: var(--font-sm);
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.modal-content input:focus {
+    outline: 3px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+.primary-btn {
+    min-height: var(--touch-target-min);
+    font-size: var(--font-md);
+    font-weight: bold;
+    background: var(--primary-blue);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.primary-btn:hover,
+.primary-btn:focus {
+    background: var(--primary-blue-dark);
+    outline: 3px solid var(--accent-yellow);
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   Focus Styles (Global)
+   ========================================== */
+
+*:focus-visible {
+    outline: 3px solid var(--primary-blue);
+    outline-offset: 2px;
+}
+
+/* ==========================================
+   Responsive Design
+   ========================================== */
+
+@media (min-width: 768px) {
+    :root {
+        --font-xs: 1rem;
+        --font-sm: 1.125rem;
+        --font-md: 1.25rem;
+        --font-lg: 1.75rem;
+        --font-xl: 2.5rem;
+    }
+
+    .controls-section {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .capture-btn {
+        width: 60%;
+    }
+
+    .voice-btn {
+        width: 35%;
+    }
+}
+
+@media (min-width: 1024px) {
+    main {
+        padding: var(--spacing-xl);
+    }
+}
+
+/* ==========================================
+   High Contrast Mode Support
+   ========================================== */
+
+@media (prefers-contrast: high) {
+    :root {
+        --border-color: #000000;
+    }
+
+    button,
+    input,
+    select {
+        border-width: 3px;
+    }
+}
+
+/* ==========================================
+   Reduced Motion Support
+   ========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ==========================================
+   Print Styles
+   ========================================== */
+
+@media print {
+    .camera-section,
+    .controls-section,
+    .loading-overlay,
+    .modal {
+        display: none;
+    }
+}

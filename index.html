@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Buddy Vision - Universal AI Visual Assistant for LA 2028 Olympics. Instant descriptions, translations, and navigation help for all visitors.">
+    <meta name="theme-color" content="#0066CC">
+    <title>Buddy Vision - Universal AI Assistant for LA 2028</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+        <div class="header-content">
+            <h1 id="app-title">
+                <span aria-label="Buddy Vision">Buddy Vision</span>
+                <span class="emoji" aria-hidden="true">👁️</span>
+            </h1>
+            <p class="tagline">Universal AI Assistant for LA 2028</p>
+            <div id="partner-badge" class="partner-badge" aria-live="polite"></div>
+        </div>
+    </header>
+
+    <!-- Language Selector -->
+    <section class="language-selector-section" aria-labelledby="language-selector-label">
+        <label id="language-selector-label" for="language-select" class="language-label">
+            <span class="label-icon" aria-hidden="true">🌍</span>
+            <span class="label-text">Select Your Language</span>
+        </label>
+        <select id="language-select" class="language-select" aria-label="Choose language for voice output">
+            <option value="en-US">English (United States)</option>
+            <option value="en-GB">English (United Kingdom)</option>
+            <option value="en-AU">English (Australia)</option>
+            <option value="en-CA">English (Canada)</option>
+            <option value="en-IN">English (India)</option>
+            <option value="es-ES">Español (España)</option>
+            <option value="es-MX">Español (México)</option>
+            <option value="es-AR">Español (Argentina)</option>
+            <option value="es-US">Español (Estados Unidos)</option>
+            <option value="fr-FR">Français (France)</option>
+            <option value="fr-CA">Français (Canada)</option>
+            <option value="de-DE">Deutsch (Deutschland)</option>
+            <option value="it-IT">Italiano (Italia)</option>
+            <option value="pt-BR">Português (Brasil)</option>
+            <option value="pt-PT">Português (Portugal)</option>
+            <option value="nl-NL">Nederlands (Nederland)</option>
+            <option value="nl-BE">Nederlands (België)</option>
+            <option value="ru-RU">Русский (Россия)</option>
+            <option value="ja-JP">日本語 (日本)</option>
+            <option value="ko-KR">한국어 (대한민국)</option>
+            <option value="zh-CN">中文 (简体)</option>
+            <option value="zh-TW">中文 (繁體)</option>
+            <option value="zh-HK">中文 (香港)</option>
+            <option value="ar-SA">العربية (السعودية)</option>
+            <option value="ar-EG">العربية (مصر)</option>
+            <option value="hi-IN">हिन्दी (भारत)</option>
+            <option value="tr-TR">Türkçe (Türkiye)</option>
+            <option value="pl-PL">Polski (Polska)</option>
+            <option value="sv-SE">Svenska (Sverige)</option>
+            <option value="nb-NO">Norsk (Norge)</option>
+            <option value="da-DK">Dansk (Danmark)</option>
+            <option value="fi-FI">Suomi (Suomi)</option>
+            <option value="el-GR">Ελληνικά (Ελλάδα)</option>
+            <option value="he-IL">עברית (ישראל)</option>
+            <option value="th-TH">ไทย (ไทย)</option>
+            <option value="vi-VN">Tiếng Việt (Việt Nam)</option>
+            <option value="id-ID">Bahasa Indonesia (Indonesia)</option>
+            <option value="ms-MY">Bahasa Melayu (Malaysia)</option>
+            <option value="fil-PH">Filipino (Pilipinas)</option>
+            <option value="cs-CZ">Čeština (Česko)</option>
+            <option value="sk-SK">Slovenčina (Slovensko)</option>
+            <option value="hu-HU">Magyar (Magyarország)</option>
+            <option value="ro-RO">Română (România)</option>
+            <option value="bg-BG">Български (България)</option>
+            <option value="hr-HR">Hrvatski (Hrvatska)</option>
+            <option value="sr-RS">Српски (Србија)</option>
+            <option value="uk-UA">Українська (Україна)</option>
+            <option value="ca-ES">Català (Espanya)</option>
+            <option value="af-ZA">Afrikaans (Suid-Afrika)</option>
+            <option value="is-IS">Íslenska (Ísland)</option>
+            <option value="ta-IN">தமிழ் (இந்தியா)</option>
+            <option value="te-IN">తెలుగు (భారతదేశం)</option>
+            <option value="bn-IN">বাংলা (ভারত)</option>
+            <option value="ur-PK">اردو (پاکستان)</option>
+        </select>
+    </section>
+
+    <main id="main-content" role="main" aria-label="Main content - tap anywhere to capture scene">
+        <!-- Accessibility Note -->
+        <div class="sr-only" role="status" aria-live="polite">
+            Welcome to Buddy Vision: Tap anywhere on screen to get instant AI descriptions
+            of signs, scenes, and surroundings. Works for all visitors - visual assistance,
+            language help, navigation support.
+        </div>
+
+        <!-- REMOVED: Venue Selector - Blind users can't/shouldn't have to select location manually
+             Location context should be detected from image content (signs, landmarks) or GPS -->
+
+        <!-- Camera Preview -->
+        <section class="camera-section" aria-labelledby="camera-label">
+            <h2 id="camera-label" class="sr-only">Camera View</h2>
+            <div class="camera-container">
+                <video id="camera-preview" autoplay playsinline muted aria-label="Live camera preview"></video>
+                <canvas id="capture-canvas" aria-hidden="true"></canvas>
+            </div>
+        </section>
+
+        <!-- Main Action Button -->
+        <section class="controls-section">
+            <button
+                id="capture-btn"
+                class="capture-btn"
+                type="button"
+                aria-label="Capture scene and get description. You can also tap anywhere on the screen to capture."
+            >
+                <span class="btn-icon" aria-hidden="true">📸</span>
+                <span class="btn-text">TAP ANYWHERE TO CAPTURE</span>
+            </button>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <button
+                id="repeat-btn"
+                class="quick-action-btn"
+                type="button"
+                aria-label="Repeat last description"
+                disabled
+            >
+                <span class="btn-icon" aria-hidden="true">🔁</span>
+                <span class="btn-text">Repeat</span>
+            </button>
+
+            <button
+                id="read-text-btn"
+                class="quick-action-btn"
+                type="button"
+                aria-label="Read visible text for translation"
+                disabled
+            >
+                <span class="btn-icon" aria-hidden="true">🌐</span>
+                <span class="btn-text">Read Text</span>
+            </button>
+        </section>
+
+        <!-- Status Messages -->
+        <div id="status-messages" role="status" aria-live="polite" aria-atomic="true" class="status-container"></div>
+
+        <!-- Description Output -->
+        <section class="description-section" aria-labelledby="description-label">
+            <h2 id="description-label" class="sr-only">AI Description</h2>
+            <div id="description-output" class="description-output" aria-live="assertive" tabindex="0">
+                <p class="placeholder-text">Tap anywhere to get instant AI descriptions in any language</p>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>Made for LA 2028 Olympics | <a href="#about">About</a> | <a href="#privacy">Privacy</a></p>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" hidden aria-live="assertive" role="alert">
+        <div class="loading-spinner"></div>
+        <p id="loading-text">Processing...</p>
+    </div>
+
+    <!-- API Key Setup Modal (for development) -->
+    <div id="api-setup-modal" class="modal" role="dialog" aria-labelledby="setup-title" aria-modal="true" hidden>
+        <div class="modal-content">
+            <h2 id="setup-title">API Setup Required</h2>
+            <p>To use Buddy Vision, please enter your API keys (this is for demo purposes only):</p>
+
+            <form id="api-setup-form">
+                <label for="openai-key">OpenAI API Key:</label>
+                <input type="password" id="openai-key" required aria-required="true">
+
+                <label for="vision-key">Google Cloud Vision API Key:</label>
+                <input type="password" id="vision-key" required aria-required="true">
+
+                <button type="submit" class="primary-btn">Save Keys</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="translations.js?v=20250116v2"></script>
+    <script src="vision.js?v=20250116v2"></script>
+    <script src="ai.js?v=20250116v2"></script>
+    <script src="app.js?v=20250116v2"></script>
+    <script src="voice.js?v=20250116v2"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        // Register service worker for PWA and offline support
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered successfully:', registration.scope);
+
+                        // Check for updates periodically
+                        setInterval(() => {
+                            registration.update();
+                        }, 60000); // Check every minute
+                    })
+                    .catch((error) => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+
+        // Handle install prompt for PWA
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+
+            // Show install button (could be added to UI later)
+            console.log('PWA install prompt available');
+        });
+    </script>
+</body>
+</html>
