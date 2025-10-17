@@ -45,34 +45,12 @@ class BuddyVision {
         // CRITICAL: Ensure loading overlay is hidden on startup
         this.hideLoading();
 
-        // Try to load API keys from localStorage first
-        const savedKeys = localStorage.getItem('buddy_vision_api_keys');
-        if (savedKeys) {
-            try {
-                const keys = JSON.parse(savedKeys);
-                this.apiKeys = keys;
-            } catch (e) {
-                console.error('Failed to parse saved API keys');
-            }
-        }
-
-        // Load API keys from URL parameters (for demo/testing) - these override saved keys
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('openai_key')) this.apiKeys.openai = urlParams.get('openai_key');
-        if (urlParams.get('vision_key')) this.apiKeys.vision = urlParams.get('vision_key');
-
-        console.log('🔑 API Keys Check:');
-        console.log('  OpenAI:', this.apiKeys.openai ? '✅ Present' : '❌ MISSING');
-        console.log('  Vision:', this.apiKeys.vision ? '✅ Present' : '❌ MISSING');
-
-        // Show API key input modal if keys are missing
-        if (!this.apiKeys.openai || !this.apiKeys.vision) {
-            this.showApiKeyModal();
-            return;
-        }
+        // Backend now handles API keys - no need for user input
+        console.log('🔑 Using backend API for AI services');
 
         // Check for partner referral
-        this.detectPartner();
+        const urlParams = new URLSearchParams(window.location.search);
+        this.detectPartner(urlParams);
 
         // Initialize camera
         await this.initCamera();
@@ -148,8 +126,10 @@ class BuddyVision {
         }
     }
 
-    detectPartner() {
-        const urlParams = new URLSearchParams(window.location.search);
+    detectPartner(urlParams) {
+        if (!urlParams) {
+            urlParams = new URLSearchParams(window.location.search);
+        }
         const referrer = urlParams.get('ref');
 
         if (referrer) {
@@ -177,69 +157,6 @@ class BuddyVision {
         this.partnerBadge.style.display = 'block';
     }
 
-    showApiKeyModal() {
-        const modal = document.createElement('div');
-        modal.innerHTML = `
-            <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;">
-                <div style="background: white; padding: 30px; border-radius: 10px; max-width: 500px; width: 100%;">
-                    <h2 style="margin-top: 0; color: #333;">API Keys Required</h2>
-                    <p style="color: #666;">Please enter your API keys to use Buddy Vision:</p>
-                    <div style="margin: 20px 0;">
-                        <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">OpenAI API Key:</label>
-                        <input type="password" id="openai-key-input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;" placeholder="sk-...">
-                    </div>
-                    <div style="margin: 20px 0;">
-                        <label style="display: block; margin-bottom: 5px; color: #333; font-weight: bold;">Google Vision API Key:</label>
-                        <input type="password" id="vision-key-input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;" placeholder="AIza...">
-                    </div>
-                    <button id="save-keys-btn" style="width: 100%; padding: 15px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold;">Save & Continue</button>
-                    <p style="margin-top: 15px; font-size: 12px; color: #999;">Keys are stored locally in your browser and never sent to our servers.</p>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-
-        document.getElementById('save-keys-btn').addEventListener('click', () => {
-            this.apiKeys.openai = document.getElementById('openai-key-input').value.trim();
-            this.apiKeys.vision = document.getElementById('vision-key-input').value.trim();
-
-            if (!this.apiKeys.openai || !this.apiKeys.vision) {
-                alert('Please enter both API keys');
-                return;
-            }
-
-            // Save to localStorage
-            localStorage.setItem('buddy_vision_api_keys', JSON.stringify(this.apiKeys));
-
-            // Remove modal
-            modal.remove();
-
-            // Continue initialization
-            this.continueInit();
-        });
-    }
-
-    async continueInit() {
-        // Check for partner referral
-        this.detectPartner();
-
-        // Initialize camera
-        await this.initCamera();
-
-        // Setup event listeners
-        this.setupEventListeners();
-
-        // Load saved settings
-        this.loadSettings();
-
-        // CRITICAL: Welcome message for blind users
-        this.speakWelcomeMessage();
-
-        // Enable tap-anywhere-to-capture
-        this.enableTapAnywhere();
-
-        console.log('Buddy Vision initialized successfully!');
-    }
 
     async initCamera() {
         try {
@@ -441,39 +358,34 @@ class BuddyVision {
         }, 30000);
 
         try {
-            // Step 1: Analyze with Google Vision
-            console.log('📸 Step 1: Calling Google Vision API...');
-            console.log('Vision API Key:', this.apiKeys.vision ? 'Present' : 'MISSING');
+            // Call backend API that handles both Google Vision and OpenAI
+            console.log('📸 Calling backend API...');
             console.log('Image data length:', imageData.length);
-            console.log('Image data preview:', imageData.substring(0, 100) + '...');
 
-            if (!window.buddyVision) {
-                throw new Error('Vision module not loaded');
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    imageData: imageData,
+                    settings: this.settings
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Backend API request failed');
             }
 
-            const visionData = await window.buddyVision.analyzeImage(imageData, this.apiKeys.vision);
-            console.log('✅ Vision data received:', JSON.stringify(visionData, null, 2));
+            const result = await response.json();
+            console.log('✅ Backend response:', result);
 
             // Store vision data for text-only reading
-            this.lastVisionData = visionData;
+            this.lastVisionData = result.visionData;
+            const description = result.description;
 
-            const translations = window.buddyTranslations?.getTranslations(currentLanguage);
-            this.showLoading(translations?.generatingDescription || 'Generating description...');
-
-            // Step 2: Generate description with GPT
-            console.log('🤖 Step 2: Calling OpenAI GPT...');
-            console.log('OpenAI API Key:', this.apiKeys.openai ? 'Present' : 'MISSING');
-
-            if (!window.buddyAI) {
-                throw new Error('AI module not loaded');
-            }
-
-            const description = await window.buddyAI.generateDescription(
-                visionData,
-                this.settings,
-                this.apiKeys.openai
-            );
-            console.log('✅ GPT Description:', description);
+            console.log('✅ Description:', description);
             console.log('Description length:', description.length);
             console.log('Is description unique?', !this.lastDescription || description !== this.lastDescription);
 
