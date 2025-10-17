@@ -16,6 +16,8 @@ class BuddyVision {
         this.loadingOverlay = document.getElementById('loading-overlay');
         this.loadingText = document.getElementById('loading-text');
         this.partnerBadge = document.getElementById('partner-badge');
+        this.eventSelect = document.getElementById('event-select');
+        this.exploreBtn = document.getElementById('explore-neighborhood-btn');
         // API modal removed - keys are pre-configured
 
         // Application state
@@ -27,8 +29,12 @@ class BuddyVision {
         this.settings = {
             voiceSpeed: 1.0,
             detailLevel: 'standard',
-            partner: null
+            partner: null,
+            selectedEvent: '',
+            selectedVenue: ''
         };
+
+        this.lastLocation = ''; // Store detected location for neighborhood exploration
 
         // API Keys - Will be loaded from environment or user input
         this.apiKeys = {
@@ -278,6 +284,25 @@ class BuddyVision {
             }
         });
 
+        // Event selector change
+        this.eventSelect.addEventListener('change', () => {
+            const value = this.eventSelect.value;
+            if (value) {
+                const [event, venue] = value.split('|');
+                this.settings.selectedEvent = event;
+                this.settings.selectedVenue = venue;
+                console.log(`Selected event: ${event} at ${venue}`);
+            } else {
+                this.settings.selectedEvent = '';
+                this.settings.selectedVenue = '';
+            }
+        });
+
+        // Explore neighborhood button
+        this.exploreBtn.addEventListener('click', async () => {
+            await this.exploreNeighborhood();
+        });
+
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.key === 'c' && e.ctrlKey) {
@@ -354,6 +379,9 @@ class BuddyVision {
             this.displayDescription(description);
             this.lastDescription = description;
 
+            // Try to extract location from description for neighborhood exploration
+            this.lastLocation = this.extractLocationFromDescription(description);
+
             // Step 4: Speak automatically
             console.log('🔊 Step 3: Speaking description...');
             if (window.buddyVoice) {
@@ -364,6 +392,11 @@ class BuddyVision {
             this.repeatBtn.disabled = false;
             if (this.lastVisionData && this.lastVisionData.text.hasText) {
                 this.readTextBtn.disabled = false;
+            }
+
+            // Show explore neighborhood button if we have a location
+            if (this.lastLocation || this.settings.selectedVenue) {
+                this.exploreBtn.removeAttribute('hidden');
             }
 
             clearTimeout(timeout); // Clear timeout on success
@@ -462,6 +495,76 @@ class BuddyVision {
         setTimeout(() => {
             document.body.removeChild(announcement);
         }, 1000);
+    }
+
+    extractLocationFromDescription(description) {
+        // Try to extract location keywords from the AI description
+        // Look for venue names, street names, neighborhoods
+        const locationKeywords = [
+            'USC', 'Coliseum', 'Rose Bowl', 'Crypto.com Arena', 'Santa Monica',
+            'Downtown', 'Hollywood', 'Venice', 'Beverly Hills', 'Pasadena',
+            'Long Beach', 'Griffith Park', 'UCLA', 'Dodger Stadium'
+        ];
+
+        for (const keyword of locationKeywords) {
+            if (description.toLowerCase().includes(keyword.toLowerCase())) {
+                return keyword;
+            }
+        }
+
+        return this.settings.selectedVenue || '';
+    }
+
+    async exploreNeighborhood() {
+        const currentLanguage = window.buddyVoice?.currentLanguage || 'en-US';
+        const translations = window.buddyTranslations?.getTranslations(currentLanguage);
+
+        const location = this.lastLocation || this.settings.selectedVenue || 'this area';
+
+        this.showLoading(translations?.analyzing || 'Getting neighborhood info...');
+
+        if (window.buddyVoice) {
+            window.buddyVoice.speak('Getting neighborhood info...');
+        }
+
+        try {
+            const response = await fetch('/api/explore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    location: location,
+                    language: currentLanguage
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to get neighborhood info');
+            }
+
+            const result = await response.json();
+            const neighborhoodInfo = result.info;
+
+            // Display neighborhood info
+            this.displayDescription(neighborhoodInfo);
+
+            // Speak it
+            if (window.buddyVoice) {
+                window.buddyVoice.speak(neighborhoodInfo);
+            }
+
+            this.hideLoading();
+            this.vibratePhone('success');
+            this.showStatus('Neighborhood info ready', 'success');
+
+        } catch (error) {
+            console.error('Error exploring neighborhood:', error);
+            this.showStatus(`Error: ${error.message}`, 'error');
+            this.hideLoading();
+            this.vibratePhone('error');
+        }
     }
 }
 

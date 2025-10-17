@@ -84,6 +84,29 @@
             <option value="bn-IN">বাংলা (ভারত)</option>
             <option value="ur-PK">اردو (پاکستان)</option>
         </select>
+
+        <!-- Event Selector (Optional) -->
+        <div class="event-selector-container">
+            <label for="event-select" class="event-label">
+                <span class="label-icon" aria-hidden="true">🏅</span>
+                <span class="label-text">Event (Optional)</span>
+            </label>
+            <select id="event-select" class="event-select" aria-label="Select Olympic event for targeted navigation">
+                <option value="">None - General Navigation</option>
+                <option value="swimming|USC Pool Complex">Swimming (USC Pool Complex)</option>
+                <option value="track-field|LA Memorial Coliseum">Track & Field (LA Memorial Coliseum)</option>
+                <option value="gymnastics|Crypto.com Arena">Gymnastics (Crypto.com Arena)</option>
+                <option value="basketball|Crypto.com Arena">Basketball (Crypto.com Arena)</option>
+                <option value="soccer|Rose Bowl">Soccer (Rose Bowl)</option>
+                <option value="beach-volleyball|Santa Monica Beach">Beach Volleyball (Santa Monica Beach)</option>
+                <option value="diving|USC Pool Complex">Diving (USC Pool Complex)</option>
+                <option value="tennis|UCLA Tennis Center">Tennis (UCLA Tennis Center)</option>
+                <option value="volleyball|Long Beach Arena">Volleyball (Long Beach Arena)</option>
+                <option value="archery|Dedeaux Field">Archery (Dedeaux Field)</option>
+                <option value="cycling|Griffith Park">Cycling (Griffith Park)</option>
+                <option value="marathon|Downtown LA">Marathon (Downtown LA)</option>
+            </select>
+        </div>
     </section>
 
     <main id="main-content" role="main" aria-label="Main content - tap anywhere to capture scene">
@@ -153,6 +176,18 @@
             <div id="description-output" class="description-output" aria-live="assertive" tabindex="0">
                 <p class="placeholder-text">Capture the scene to identify your location and get navigation help for LA 2028</p>
             </div>
+
+            <!-- Explore Neighborhood Button (shows after response) -->
+            <button
+                id="explore-neighborhood-btn"
+                class="explore-btn"
+                type="button"
+                aria-label="Learn more about the neighborhood"
+                hidden
+            >
+                <span class="btn-icon" aria-hidden="true">🗺️</span>
+                <span class="btn-text">Explore Neighborhood</span>
+            </button>
         </section>
     </main>
 

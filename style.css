@@ -208,6 +208,57 @@ h1 {
 }
 
 /* ==========================================
+   Event Selector (Optional)
+   ========================================== */
+
+.event-selector-container {
+    padding: 0.6rem 1rem;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.event-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.3rem;
+    text-align: center;
+}
+
+.event-select {
+    width: 100%;
+    max-width: 600px;
+    min-height: 40px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.3rem 0.8rem;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.event-select:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.event-select:focus {
+    outline: 3px solid var(--accent-yellow);
+    outline-offset: 2px;
+    transform: translateY(-1px);
+}
+
+/* ==========================================
    Main Content
    ========================================== */
 
@@ -474,6 +525,45 @@ section {
 .placeholder-text {
     color: #666666;
     font-style: italic;
+}
+
+/* Explore Neighborhood Button */
+.explore-btn {
+    min-width: 160px;
+    min-height: 36px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0.4rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    justify-content: center;
+    margin: 0.8rem auto 0;
+    transition: all 0.2s;
+    opacity: 0.85;
+}
+
+.explore-btn:hover,
+.explore-btn:focus {
+    background: var(--primary-blue);
+    color: var(--bg-primary);
+    transform: translateY(-1px);
+    outline: 2px solid var(--accent-yellow);
+    outline-offset: 2px;
+    opacity: 1;
+}
+
+.explore-btn .btn-icon {
+    font-size: 1em;
+}
+
+.explore-btn[hidden] {
+    display: none;
 }
 
 .description-controls {

@@ -163,7 +163,13 @@ async function generateDescriptionWithGPT(visionData, settings, apiKey, language
         context += `\nLogos: ${visionData.logos.join(', ')}\n`;
     }
 
-    const userPrompt = `${context}\n\nAnalyze this image to help a visitor navigate LA during the 2028 Olympics. Your response in ${targetLanguage} should:
+    // Add event/venue context if selected
+    let eventContext = '';
+    if (settings.selectedEvent && settings.selectedVenue) {
+        eventContext = `\n\nIMPORTANT: The user is trying to attend ${settings.selectedEvent} at ${settings.selectedVenue}. Help them navigate there if possible.`;
+    }
+
+    const userPrompt = `${context}${eventContext}\n\nAnalyze this image to help a visitor navigate LA during the 2028 Olympics. Your response in ${targetLanguage} should:
 
 1. IDENTIFY THE LOCATION: Try to determine where they are based on landmarks, street signs, building names, or venue markers.
 
