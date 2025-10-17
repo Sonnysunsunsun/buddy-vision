@@ -130,14 +130,14 @@ async function generateDescriptionWithGPT(visionData, settings, apiKey, language
 
     const targetLanguage = languageNames[language] || 'English';
 
-    let systemPrompt = `You are an accessibility assistant for blind and visually impaired users. IMPORTANT: You MUST respond in ${targetLanguage}. `;
+    let systemPrompt = `You are a navigation assistant for LA 2028 Olympics visitors. Your job is to help people identify where they are and navigate to where they need to go. IMPORTANT: You MUST respond in ${targetLanguage}. `;
 
     if (detailLevel === 'brief') {
-        systemPrompt += `Provide a SHORT 1-2 sentence description in ${targetLanguage} focusing on the most important elements.`;
+        systemPrompt += `Provide a SHORT 1-2 sentence location identification and navigation help in ${targetLanguage}.`;
     } else if (detailLevel === 'detailed') {
-        systemPrompt += `Provide a DETAILED description in ${targetLanguage} including spatial relationships, colors, and context.`;
+        systemPrompt += `Provide DETAILED location analysis and navigation directions in ${targetLanguage}.`;
     } else {
-        systemPrompt += `Provide a clear, natural description in ${targetLanguage} of what you see.`;
+        systemPrompt += `Identify the location and provide helpful navigation guidance in ${targetLanguage}.`;
     }
 
     // Build context from vision data
@@ -163,7 +163,17 @@ async function generateDescriptionWithGPT(visionData, settings, apiKey, language
         context += `\nLogos: ${visionData.logos.join(', ')}\n`;
     }
 
-    const userPrompt = `${context}\n\nDescribe this scene naturally for a blind person in ${targetLanguage}. Be conversational and helpful. Remember: Your entire response MUST be in ${targetLanguage}.`;
+    const userPrompt = `${context}\n\nAnalyze this image to help a visitor navigate LA during the 2028 Olympics. Your response in ${targetLanguage} should:
+
+1. IDENTIFY THE LOCATION: Try to determine where they are based on landmarks, street signs, building names, or venue markers.
+
+2. SPOT LA28 WORKERS: Look for people wearing LA28 volunteer uniforms, Olympic staff badges, or official gear who can help.
+
+3. PROVIDE NAVIGATION HELP: If you can identify the location, suggest directions or next steps. If nearby venues/facilities are visible, mention them.
+
+4. IF LOCATION IS UNCLEAR: Tell the user "I can't determine your exact location from this image. For better navigation help, please take a photo of: a nearby street sign, a building with a visible address, or a recognizable LA landmark."
+
+Be conversational and helpful. Focus on practical navigation guidance. Remember: Your entire response MUST be in ${targetLanguage}.`;
 
     const requestBody = JSON.stringify({
         model: 'gpt-4o-mini',
