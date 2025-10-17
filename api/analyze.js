@@ -106,17 +106,38 @@ async function analyzeWithGoogleVision(imageBase64, apiKey) {
 }
 
 // OpenAI GPT-4 Vision call
-async function generateDescriptionWithGPT(visionData, settings, apiKey) {
+async function generateDescriptionWithGPT(visionData, settings, apiKey, language) {
     const detailLevel = settings.detailLevel || 'standard';
 
-    let systemPrompt = 'You are an accessibility assistant for blind and visually impaired users. ';
+    // Map language codes to language names
+    const languageNames = {
+        'en-US': 'English',
+        'es-ES': 'Spanish',
+        'fr-FR': 'French',
+        'de-DE': 'German',
+        'it-IT': 'Italian',
+        'pt-PT': 'Portuguese',
+        'ru-RU': 'Russian',
+        'ja-JP': 'Japanese',
+        'ko-KR': 'Korean',
+        'zh-CN': 'Chinese (Simplified)',
+        'ar-SA': 'Arabic',
+        'hi-IN': 'Hindi',
+        'nl-NL': 'Dutch',
+        'pl-PL': 'Polish',
+        'tr-TR': 'Turkish'
+    };
+
+    const targetLanguage = languageNames[language] || 'English';
+
+    let systemPrompt = `You are an accessibility assistant for blind and visually impaired users. IMPORTANT: You MUST respond in ${targetLanguage}. `;
 
     if (detailLevel === 'brief') {
-        systemPrompt += 'Provide a SHORT 1-2 sentence description focusing on the most important elements.';
+        systemPrompt += `Provide a SHORT 1-2 sentence description in ${targetLanguage} focusing on the most important elements.`;
     } else if (detailLevel === 'detailed') {
-        systemPrompt += 'Provide a DETAILED description including spatial relationships, colors, and context.';
+        systemPrompt += `Provide a DETAILED description in ${targetLanguage} including spatial relationships, colors, and context.`;
     } else {
-        systemPrompt += 'Provide a clear, natural description of what you see.';
+        systemPrompt += `Provide a clear, natural description in ${targetLanguage} of what you see.`;
     }
 
     // Build context from vision data
@@ -142,7 +163,7 @@ async function generateDescriptionWithGPT(visionData, settings, apiKey) {
         context += `\nLogos: ${visionData.logos.join(', ')}\n`;
     }
 
-    const userPrompt = `${context}\n\nDescribe this scene naturally for a blind person. Be conversational and helpful.`;
+    const userPrompt = `${context}\n\nDescribe this scene naturally for a blind person in ${targetLanguage}. Be conversational and helpful. Remember: Your entire response MUST be in ${targetLanguage}.`;
 
     const requestBody = JSON.stringify({
         model: 'gpt-4o-mini',
@@ -190,7 +211,7 @@ module.exports = async (req, res) => {
     }
 
     try {
-        const { imageData, settings } = req.body;
+        const { imageData, settings, language } = req.body;
 
         if (!imageData) {
             return res.status(400).json({ error: 'Missing imageData' });
@@ -210,9 +231,9 @@ module.exports = async (req, res) => {
         console.log('Analyzing with Google Vision...');
         const visionData = await analyzeWithGoogleVision(imageData, visionKey);
 
-        // Step 2: Generate description with GPT
-        console.log('Generating description with GPT...');
-        const description = await generateDescriptionWithGPT(visionData, settings || {}, openaiKey);
+        // Step 2: Generate description with GPT in the user's language
+        console.log('Generating description with GPT in language:', language || 'en-US');
+        const description = await generateDescriptionWithGPT(visionData, settings || {}, openaiKey, language || 'en-US');
 
         // Return combined result
         return res.status(200).json({

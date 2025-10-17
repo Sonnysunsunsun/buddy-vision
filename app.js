@@ -369,7 +369,8 @@ class BuddyVision {
                 },
                 body: JSON.stringify({
                     imageData: imageData,
-                    settings: this.settings
+                    settings: this.settings,
+                    language: currentLanguage // Pass the user's selected language
                 })
             });
 
